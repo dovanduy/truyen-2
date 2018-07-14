@@ -73,6 +73,41 @@
                                 <label class="col-sm-2 control-label">Mô tả</label>
                                 <div class="col-sm-10">
                                   <textarea class="form-control" name="summary" rows="10" id="summary">{{old("summary")}}</textarea>
+                                  <script>
+                                        // Replace the <textarea id="editor1"> with a CKEditor
+                                        // instance, using default configuration.
+                                        //var message = CKEDITOR.instances.messageArea.getData();
+                                       CKEDITOR.replace( 'summary', {
+                                        height: '300px',
+                                        enterMode: CKEDITOR.ENTER_BR, 
+                                        entities:false,
+                                        basicEntities:false,
+                                        htmlEncodeOutput:false,
+                                        toolbar:    
+                                            [
+                                                [,'Preview','Templates'],
+                                                           ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                                                           ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                                                           '/',
+                                                           ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                                                           ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+                                                           ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                                                           ['BidiLtr', 'BidiRtl' ],
+                                                           ['Link','Unlink','Anchor'],
+                                                           ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+                                                           '/',
+                                                           ['Styles','Format','Font','FontSize'],
+                                                           ['TextColor','BGColor'],
+                                                           ['Maximize','ShowBlocks','Syntaxhighlight']
+                                         ],
+                                         //filebrowserWindowWidth  : 300,
+                                         //filebrowserWindowHeight : 300,
+                                         filebrowserBrowseUrl : '../../assets/ckfinder/ckfinder.html',
+                         
+                                         filebrowserImageBrowseUrl : '../../assets/ckfinder/ckfinder.html?type=Images'
+                                        });
+
+                                </script>
                               </div>
                             </div>
                             <div class="form-group">

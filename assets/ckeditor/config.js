@@ -37,6 +37,10 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	config.extraPlugins = 'justify';
 	//config.extraPlugins = '';
+	config.enterMode = CKEDITOR.ENTER_BR; // <p></p> to <br />
+	config.entities = false;
+	config.basicEntities = false;
+	config.htmlEncodeOutput = false;
 };
 
 CKEDITOR.on('dialogDefinition', function (ev) {
@@ -57,4 +61,15 @@ CKEDITOR.on('dialogDefinition', function (ev) {
             onOk && onOk.apply(this, e);
         };
     }
+});
+
+CKEDITOR.on( 'instanceCreated', function( event ) {
+ editor.on( 'configLoaded', function() {
+
+  editor.config.basicEntities = false;
+  editor.config.entities_greek = false; 
+  editor.config.entities_latin = false; 
+  editor.config.entities_additional = '';
+
+ });
 });

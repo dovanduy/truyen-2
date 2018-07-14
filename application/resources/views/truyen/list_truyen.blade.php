@@ -66,7 +66,7 @@
                                        <td>{{$item->total_chap}}</td>
                                        <td>{{ date('d-m-Y',strtotime($item->created_date))}}</td>
                                         <td>
-                                            <a class="btn btn-success btn-xs" href="{{url('client/edit-user-spt/'.$item->id)}}"><i class="fa fa-edit"></i>Sửa</a>
+                                            <a class="btn btn-success btn-xs" href="{{url('client/sua-truyen/'.$item->id)}}"><i class="fa fa-edit"></i>Sửa</a>
                                             <a href="#" class="btn btn-danger btn-xs cdelete" id="{{$item->id}}"><i class="fa fa-trash"></i> Xoá</a>
                                         </td>
                                     </tr>

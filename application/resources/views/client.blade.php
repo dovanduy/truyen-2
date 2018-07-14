@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>{{app_config('AppTitle')}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Chôm truyện</title>
     <link rel="icon" type="image/x-icon"  href="<?php echo asset(app_config('AppFav')); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -25,6 +25,7 @@
     {!! Html::style("assets/css/style.css") !!}
     {!! Html::style("assets/css/admin.css") !!}
     {!! Html::style("assets/css/responsive.css") !!}
+    {!! Html::script("assets/ckeditor/ckeditor.js") !!}
 </head>
 <body class="has-left-bar has-top-bar @if(Auth::guard('client')->user()->menu_open==1) left-bar-open @endif">
 

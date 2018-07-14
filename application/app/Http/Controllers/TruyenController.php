@@ -27,19 +27,19 @@ class TruyenController extends Controller
         $messages = array(
             'title.required'      => 'Chưa nhập tên truyện',
             'title.unique'      => 'Tên truyện đã tồn tại',
-            // 'url.required'        => 'Chưa nhập url',
-            // 'website_id.required' => 'Chưa chọn nguồn',
-            // 'summary.required'    => 'Chưa nhập mô tả',
-            // 'linkFile.required'   => 'Chưa get hình đại diện',
-            // 'total_chap.required'   => 'Chưa get tổng số chap'
+            'url.required'        => 'Chưa nhập url',
+            'website_id.required' => 'Chưa chọn nguồn',
+            'summary.required'    => 'Chưa nhập mô tả',
+            'linkFile.required'   => 'Chưa get hình đại diện',
+            'total_chap.required'   => 'Chưa get tổng số chap'
         );
         $v = \Validator::make($request->all(), [
             'title'      => 'required|unique:truyen,title',
-            // 'url'        => 'required',
-            // 'website_id' => 'required',
-            // 'summary'    => 'required',
-            // 'linkFile'   => 'required',
-            // 'total_chap'   => 'required',
+            'url'        => 'required',
+            'website_id' => 'required',
+            'summary'    => 'required',
+            'linkFile'   => 'required',
+            'total_chap'   => 'required',
         ], $messages);
 
         if ($v->fails()) {
@@ -97,7 +97,9 @@ class TruyenController extends Controller
                 $url      = $imgSrc;
                 $fileName = explode('/', $imgSrc);
                 $fileName = array_reverse($fileName);
-                $fileName = $nameManga . '_' . $fileName[0];
+                $typeFileName=explode('.',$fileName[0]);
+                $typeFileName=$typeFileName[1];
+                $fileName = $nameManga.'.'.$typeFileName;
                 $ch       = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -164,6 +166,14 @@ class TruyenController extends Controller
         }
         $response = array('info' => 'success', 'statusCode' => 0, 'totalChap' => $totalChap);
         return $response;
+
+    }
+
+    public function editTruyen(Request $request){
+        $id=$request->id;
+        $websites = Website::all();
+        $truyen=Truyen::find($id);
+        return view('truyen.edit_truyen',compact('truyen','websites'));
 
     }
 }
