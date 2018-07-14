@@ -196,7 +196,7 @@ class CrawController extends Controller
                 $title=explode(' ',$title);
                 $title = array_reverse($title);
                 $totalChap = $title[0];
-                echo $totalChap;
+                echo ltrim($totalChap,'0');
                 break;
             }
         }

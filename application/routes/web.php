@@ -13,7 +13,7 @@
 //======================================================================
 // Client Login
 //======================================================================
-Route::get('/truyen-login', 'AuthController@clientLogin');
+
 Route::post('client/get-login', 'AuthController@clientGetLogin');
 Route::get('signup', 'AuthController@clientSignUp');
 Route::post('user/post-registration', 'AuthController@postUserRegistration');
@@ -658,7 +658,9 @@ Route::get('craw/craw-total-chap-truyentranh', 'CrawController@crawTotalChapTruy
 //======================================================================
 // admin
 //=========================admin=============================================
+Route::get('/truyen-login', 'AuthController@clientLogin');
 Route::get('client/them-truyen', 'TruyenController@themTruyen');
 Route::post('client/post-them-truyen', 'TruyenController@postThemTruyen');
 Route::get('client/danh-sach-truyen', 'TruyenController@listTruyen');
 Route::get('client/get-img-avatar', 'TruyenController@getImgAvatar');
+Route::get('client/get-total-chap', 'TruyenController@getTotalChap');

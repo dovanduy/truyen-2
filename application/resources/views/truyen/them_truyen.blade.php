@@ -16,7 +16,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Thêm truyện</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" id="showLoading">
                         <form class="form-horizontal" role="form" method="post" action="{{url('client/post-them-truyen')}}" >
                             {{ csrf_field() }}
                             <div class="form-group">
@@ -62,9 +62,9 @@
                                 <label class="col-sm-2 control-label">Tổng số chap</label>
                                 <div class="col-sm-10">
                                     <div class="input-group input-group-lg">
-                                        <input type="text" class="form-control" placeholder="Tổng số chap" style="font-size: 13px">
+                                        <input type="text" class="form-control" id="total_chap" name="total_chap" placeholder="Tổng số chap" style="font-size: 13px">
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" style="font-size: 13px">Get</button>
+                                            <button type="button" class="btn btn-default" style="font-size: 13px" id="btnTotalChap">Get</button>
                                         </span>
                                     </div>
                               </div>
@@ -75,8 +75,14 @@
                                   <textarea class="form-control" name="summary" rows="10" id="summary">{{old("summary")}}</textarea>
                               </div>
                             </div>
-                    <input type="hidden" name="linkFile" id="linkFile"/>
-                    <button type="submit" class="btn btn-success btn-sm pull-left"><i class="fa fa-send"></i> Thêm </button>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"></label>
+                                <div class="col-sm-10">
+                                  <input type="hidden" name="linkFile" id="linkFile"/>
+                                    <button type="submit" class="btn btn-success btn-sm pull-left"><i class="fa fa-send"></i> Thêm </button>
+                              </div>
+                            </div>
+                    
                 </form>
             </div>
         </div>

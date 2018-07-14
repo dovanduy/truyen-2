@@ -36,7 +36,7 @@
                     <div class="panel">
                         <div class="panel-heading">
                              <div class="row" style="margin:0px"><h3 class="panel-title pull-left">Danh sách truyện</h3>
-                             <a href="{{url('client/showInsertUserSpt/'.Request::route('cateIdSub'))}}"><button class="btn btn-success pull-right"><i class="fa fa-plus"></i> Thêm </button></a></div>
+                             <a href="{{url('client/them-truyen')}}"><button class="btn btn-success pull-right"><i class="fa fa-plus"></i> Thêm </button></a></div>
 
                         </div>
                         <div class="panel-body p-none">
@@ -63,7 +63,7 @@
                                             echo $website->name;
                                            ?>
                                        </td>
-                                       <td>{{$item->last_chap}}</td>
+                                       <td>{{$item->total_chap}}</td>
                                        <td>{{ date('d-m-Y',strtotime($item->created_date))}}</td>
                                         <td>
                                             <a class="btn btn-success btn-xs" href="{{url('client/edit-user-spt/'.$item->id)}}"><i class="fa fa-edit"></i>Sửa</a>
