@@ -269,6 +269,10 @@
         e.preventDefault();
         $.post(_url+'/user/menu-open-status');
     });
+
+    $(".alert").delay(5000).slideUp(200, function() {
+        $(this).alert('close');
+    });
 </script>
 
 {{--Custom JavaScript Start--}}

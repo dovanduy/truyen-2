@@ -8,7 +8,7 @@ use App\Console\Commands\SendScheduleSMS;
 use App\Console\Commands\VerifyProductStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\TestCraw;
+use App\Console\Commands\CrawFirst;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -17,11 +17,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        SendScheduleSMS::class,
-        SendRecurringInvoice::class,
+        // SendScheduleSMS::class,
+        // SendRecurringInvoice::class,
         //VerifyProductStatus::class,
-        BulkSMSFile::class,
-        TestCraw::class,
+        // BulkSMSFile::class,
+        CrawFirst::class,
     ];
 
     /**

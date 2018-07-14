@@ -650,6 +650,7 @@ Route::get('user/findMobileSchedule', 'UserSMSController@findMobileSchedule');
 // crawler
 //=========================crawler=============================================
 Route::get('craw/craw-blog-truyen', 'CrawController@crawBlogTruyen');
+Route::get('craw/craw-truyen-tranh', 'CrawController@crawTruyenTranh');
 Route::get('craw/craw-avatar-blogtruyen', 'CrawController@crawAvatarBlogTruyen');
 Route::get('craw/craw-avatar-truyentranh', 'CrawController@crawAvatarTruyenTranh');
 Route::get('craw/craw-total-chap-blogtruyen', 'CrawController@crawTotalChapBlogTruyen');
