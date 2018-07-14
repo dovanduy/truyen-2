@@ -665,3 +665,5 @@ Route::get('client/danh-sach-truyen', 'TruyenController@listTruyen');
 Route::get('client/get-img-avatar', 'TruyenController@getImgAvatar');
 Route::get('client/get-total-chap', 'TruyenController@getTotalChap');
 Route::get('client/sua-truyen/{id}', 'TruyenController@editTruyen');
+Route::post('client/post-sua-truyen', 'TruyenController@postSuaTruyen');
+Route::get('client/delete-truyen/{id}', 'TruyenController@deleteTruyen');

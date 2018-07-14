@@ -69,7 +69,9 @@ else{
     $protocol = 'http';
 }
 $host  = $_SERVER['HTTP_HOST'];
-$baseUrl = $protocol . "://" .$host."/ultisms/assets/upload/";
+//$baseUrl = $protocol . "://" .$host."/spt/assets/upload/";
+//$baseUrl = "../../../assets/upload/";
+$baseUrl='/fileupload/';
 
 /*
 $baseDir : the path to the local directory (in the server) which points to the

@@ -10,7 +10,7 @@
 }
 
 .data-table td{
-  white-space: nowrap;
+  /*white-space: nowrap;*/
 }
 .table tbody tr td {
     font-size:12px;
@@ -44,18 +44,18 @@
                             <table class="table data-table table-hover table-ultra-responsive">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th style="width:10%">#</th>
                                     <th>Tên</th>
                                     <th>Nguồn</th>
                                     <th>Tổng số chap</th>
 									<th>Ngày tạo</th>
-									<th>Action</th>
+									<th style="width:15%">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($truyens as $item)
                                     <tr>
-                                       <td><img src="{{URL::asset('files/'.$item->img_avatar)}}" width="100px" height="100px"></td>
+                                       <td><img src="{{URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar)}}" width="150px" height="100px"></td>
                                        <td>{{$item->title}}</td>
                                        <td>
                                            <?php
@@ -101,8 +101,8 @@
                                         //"bAutoWidth": false,
                                         //"autoWidth": true,
                                         //"scrollX": true,
-                                        "scrollX": true,
-                                        "bAutoWidth": true,
+                                        "scrollX": false,
+                                        "bAutoWidth": false,
                                         "oLanguage": {
                                             "sLengthMenu": "Hiện _MENU_ Dòng",
                                             "sSearch": "",
@@ -116,8 +116,6 @@
                                             "sUrl": ""
                                         }
                                       });
-                                        
-                                        
 
 </script>
 <script>
@@ -127,7 +125,7 @@
                 bootbox.confirm("Are you sure?", function (result) {
                     if (result) {
                         var _url = $("#_url").val();
-                        window.location.href = _url + "/client/delete-user-spt/" + id;
+                        window.location.href = _url + "/client/delete-truyen/" + id;
                     }
                 });
             });
