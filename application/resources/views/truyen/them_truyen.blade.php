@@ -43,6 +43,17 @@
                               </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">Thể loại</label>
+                                <div class="col-sm-3">
+                                  <select class="cate_id form-control" name="cate_id" id="cate_id"  data-live-search="true">
+                                    <option value="">Chọn</option>
+                                    @foreach($cates as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Hình đại diện</label>
                                 <div class="col-sm-10">
                                   <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -50,9 +61,6 @@
                                       <img src="{{URL::asset('assets/img/no-image.jpg')}}" id="imgAvatar"/>
                                   </div>
                                   <div>
-                                    <span class="btn btn-file btn-success"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span>
-                                    <input type="file" name="img"/></span>
-                                    <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload">Remove</a>
                                     <a href="#" class="btn btn-danger" id="btnGetImg">Get image</a>
                                 </div>
                             </div>
@@ -139,6 +147,8 @@
     $(document).ready(function(){
         $('.selectpicker').selectpicker();
         $('.selectpicker').selectpicker('val',{{old('website_id')}});
+        $('.cate_id').selectpicker();
+        $('.cate_id').selectpicker('val',{{old('cate_id')}});
         Pos.initGetImg();
         Pos.initGetTotalChap();
     });

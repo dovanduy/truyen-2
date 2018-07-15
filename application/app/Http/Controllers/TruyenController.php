@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cate;
 use App\Models\Truyen;
 use App\Models\Website;
 use Illuminate\Http\Request;
@@ -25,19 +26,21 @@ class TruyenController extends Controller
     public function themTruyen(Request $request)
     {
         $websites = Website::all();
-        return view('truyen.them_truyen', compact('websites'));
+        $cates    = Cate::all();
+        return view('truyen.them_truyen', compact('websites', 'cates'));
     }
 
     public function postThemTruyen(Request $request)
     {
         $messages = array(
             'title.required'      => 'Chưa nhập tên truyện',
-            'title.unique'      => 'Tên truyện đã tồn tại',
+            'title.unique'        => 'Tên truyện đã tồn tại',
             'url.required'        => 'Chưa nhập url',
             'website_id.required' => 'Chưa chọn nguồn',
             'summary.required'    => 'Chưa nhập mô tả',
             'linkFile.required'   => 'Chưa get hình đại diện',
-            'total_chap.required'   => 'Chưa get tổng số chap'
+            'total_chap.required' => 'Chưa get tổng số chap',
+            'cate_id.required'    => 'Chưa chọn thể loại',
         );
         $v = \Validator::make($request->all(), [
             'title'      => 'required|unique:truyen,title',
@@ -45,7 +48,8 @@ class TruyenController extends Controller
             'website_id' => 'required',
             'summary'    => 'required',
             'linkFile'   => 'required',
-            'total_chap'   => 'required',
+            'total_chap' => 'required',
+            'cate_id'    => 'required',
         ], $messages);
 
         if ($v->fails()) {
@@ -55,6 +59,7 @@ class TruyenController extends Controller
         $truyen->title        = trim($request->title);
         $truyen->folder_name  = vn_to_str(trim($request->title));
         $truyen->url          = trim($request->url);
+        $truyen->cate_id          =$request->cate_id;
         $truyen->img_avatar   = $request->linkFile;
         $truyen->website_id   = $request->website_id;
         $truyen->summary      = trim($request->summary);
@@ -94,14 +99,14 @@ class TruyenController extends Controller
         $result    = [];
         foreach ($html->find($divParent) as $div) {
             foreach ($div->find('img') as $element) {
-                $imgSrc   = $element->src;
-                $url      = $imgSrc;
-                $fileName = explode('/', $imgSrc);
-                $fileName = array_reverse($fileName);
-                $typeFileName=explode('.',$fileName[0]);
-                $typeFileName=$typeFileName[1];
-                $fileName = $nameManga.'.'.$typeFileName;
-                $ch       = curl_init();
+                $imgSrc       = $element->src;
+                $url          = $imgSrc;
+                $fileName     = explode('/', $imgSrc);
+                $fileName     = array_reverse($fileName);
+                $typeFileName = explode('.', $fileName[0]);
+                $typeFileName = $typeFileName[1];
+                $fileName     = $nameManga . '.' . $typeFileName;
+                $ch           = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 //curl_setopt($ch, CURLOPT_SSLVERSION, 3);
@@ -170,50 +175,55 @@ class TruyenController extends Controller
 
     }
 
-    public function editTruyen(Request $request){
-        $id=$request->id;
+    public function editTruyen(Request $request)
+    {
+        $id       = $request->id;
         $websites = Website::all();
-        $truyen=Truyen::find($id);
-        return view('truyen.edit_truyen',compact('truyen','websites'));
+        $truyen   = Truyen::find($id);
+        $cates=Cate::all();
+        return view('truyen.edit_truyen', compact('truyen', 'websites','cates'));
 
     }
 
-    public function postSuaTruyen(Request $request){
-        $id=$request->id;
+    public function postSuaTruyen(Request $request)
+    {
+        $id       = $request->id;
         $messages = array(
             'title.required'      => 'Chưa nhập tên truyện',
-            'title.unique'      => 'Tên truyện đã tồn tại',
+            'title.unique'        => 'Tên truyện đã tồn tại',
             'url.required'        => 'Chưa nhập url',
             'website_id.required' => 'Chưa chọn nguồn',
             'summary.required'    => 'Chưa nhập mô tả',
-            'total_chap.required'   => 'Chưa get tổng số chap'
+            'total_chap.required' => 'Chưa get tổng số chap',
         );
         $v = \Validator::make($request->all(), [
-            'title'      => 'required|unique:truyen,title,'.$id,
+            'title'      => 'required|unique:truyen,title,' . $id,
             'url'        => 'required',
             'website_id' => 'required',
             'summary'    => 'required',
-            'total_chap'   => 'required',
+            'total_chap' => 'required',
         ], $messages);
 
         if ($v->fails()) {
-            return redirect('client/sua-truyen/'.$id)->withErrors($v->errors())->withInput();
+            return redirect('client/sua-truyen/' . $id)->withErrors($v->errors())->withInput();
         }
-        
-        $truyen               = Truyen::find($id);
+
+        $truyen = Truyen::find($id);
         //rename folder truyen
-        $titleNew=$request->title;
-        $titleOld=$truyen->title;
-        $rootPath = dirname(base_path());
+        $titleNew      = $request->title;
+        $titleOld      = $truyen->title;
+        $rootPath      = dirname(base_path());
         $oldFolderName = $rootPath . '/files/' . vn_to_str($titleOld);
-        $newFolderName= $rootPath . '/files/' . vn_to_str($titleNew);
+        $newFolderName = $rootPath . '/files/' . vn_to_str($titleNew);
         rename($oldFolderName, $newFolderName);
-        
-        $truyen->title        = trim($request->title);
+
+        $truyen->title       = trim($request->title);
         $truyen->folder_name = vn_to_str(trim($request->title));
-        $truyen->url          = trim($request->url);
-        if($request->has('linkFile'))
-            $truyen->img_avatar   = $request->linkFile;
+        $truyen->url         = trim($request->url);
+        if ($request->has('linkFile')) {
+            $truyen->img_avatar = $request->linkFile;
+        }
+        $truyen->cate_id   = $request->cate_id;
         $truyen->website_id   = $request->website_id;
         $truyen->summary      = trim($request->summary);
         $truyen->total_chap   = $request->total_chap;
@@ -225,12 +235,13 @@ class TruyenController extends Controller
         ]);
     }
 
-    public function deleteTruyen(Request $request){
-        $id=$request->id;
-        $truyen=Truyen::find($id);
-        $truyen->is_delete=1;
+    public function deleteTruyen(Request $request)
+    {
+        $id                = $request->id;
+        $truyen            = Truyen::find($id);
+        $truyen->is_delete = 1;
         $truyen->save();
-         return redirect('client/danh-sach-truyen')->with([
+        return redirect('client/danh-sach-truyen')->with([
             'message' => 'Xóa truyện thành công',
         ]);
     }

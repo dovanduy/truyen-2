@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use ReCaptcha\ReCaptcha;
-
+use App\Models\Cate;
 include base_path() . '/vendor/simplehtmldom/simple_html_dom.php';
 class CrawController extends Controller
 {
@@ -46,7 +46,6 @@ class CrawController extends Controller
         foreach ($html->find('#list-chapters') as $div) {
             foreach ($div->find('a') as $row1) {
                 $title     = $row1->plaintext;
-                $href      = 'http://blogtruyen.com' . $row1->href;
                 $urlChild  = 'http://blogtruyen.com' . $row1->href;
                 $context   = stream_context_create(array('http' => array('header' => 'User-Agent: Mozilla compatible')));
                 $response  = file_get_contents($urlChild, false, $context);
@@ -249,6 +248,22 @@ class CrawController extends Controller
                 $totalChap = $title[0];
                 echo ltrim($totalChap,'0');
                 break;
+            }
+        }
+    }
+
+    public function crawCate(){
+        $url        = 'http://truyentranh.net/';
+        $context    = stream_context_create(array('http' => array('header' => 'User-Agent: Mozilla compatible')));
+        $response   = file_get_contents($url, false, $context);
+        $html       = str_get_html($response);
+        foreach ($html->find('.category') as $div) {
+            foreach ($div->find('a') as $element) {
+                $element->find('span',0)->outertext='';
+                $title= trim($element->innertext);
+                $cate = new Cate();
+                $cate->name=$title;
+                $cate->save();
             }
         }
     }

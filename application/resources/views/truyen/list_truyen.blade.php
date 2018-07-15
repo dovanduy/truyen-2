@@ -47,6 +47,7 @@
                                     <th style="width:10%">#</th>
                                     <th>Tên</th>
                                     <th>Nguồn</th>
+                                    <th>Thể loại</th>
                                     <th>Tổng số chap</th>
 									<th>Ngày tạo</th>
 									<th style="width:15%">Action</th>
@@ -59,8 +60,14 @@
                                        <td>{{$item->title}}</td>
                                        <td>
                                            <?php
-                                            $website = \App\Models\Website::find($item->website_id)->first();
+                                            $website = \App\Models\Website::where('id',$item->website_id)->first();
                                             echo $website->name;
+                                           ?>
+                                       </td>
+                                       <td>
+                                           <?php
+                                            $cate = \App\Models\Cate::where('id',$item->cate_id)->first();
+                                            echo $cate->name;
                                            ?>
                                        </td>
                                        <td>{{$item->total_chap}}</td>

@@ -43,6 +43,17 @@
                               </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">Thể loại</label>
+                                <div class="col-sm-10">
+                                  <select class="cate_id selectpicker form-control" name="cate_id" id="cate_id"  data-live-search="true">
+                                    <option value="">Chọn</option>
+                                    @foreach($cates as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Hình đại diện</label>
                                 <div class="col-sm-10">
                                   <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -141,6 +152,8 @@
     $(document).ready(function(){
         $('.selectpicker').selectpicker();
         $('.selectpicker').selectpicker('val',{{$truyen->website_id}});
+        $('.cate_id').selectpicker();
+        $('.cate_id').selectpicker('val',{{$truyen->cate_id}});
         Pos.initGetImg();
         Pos.initGetTotalChap();
     });

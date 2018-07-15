@@ -655,6 +655,7 @@ Route::get('craw/craw-avatar-blogtruyen', 'CrawController@crawAvatarBlogTruyen')
 Route::get('craw/craw-avatar-truyentranh', 'CrawController@crawAvatarTruyenTranh');
 Route::get('craw/craw-total-chap-blogtruyen', 'CrawController@crawTotalChapBlogTruyen');
 Route::get('craw/craw-total-chap-truyentranh', 'CrawController@crawTotalChapTruyenTranh');
+Route::get('craw/craw-cate', 'CrawController@crawCate');
 
 //======================================================================
 // admin
