@@ -6,7 +6,7 @@
                         <?php
                             $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('chap_number','desc')->take(8)->get();
                         ?>
-						<div class="col-md-6 col-sm-12">
+						<div class="col-md-6 col-sm-12 mgBottom">
 							<div class="card h-100">
 								<div class="single-post post-style-1">
 
@@ -60,4 +60,7 @@
 							</div><!-- card -->
 						</div><!-- col-md-6 col-sm-12 -->
                         @endforeach
+                        <div class="col-lg-8 col-md-12 offset-5" id="remove-row">
+                            <button class="load-more-btn btn btn-info" id="btn-more" href="#" data-id="{{$itemt->id}}">LOAD MORE</button>
+                        </div>
 					

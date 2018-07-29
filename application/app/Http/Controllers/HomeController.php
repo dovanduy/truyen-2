@@ -24,12 +24,8 @@ class HomeController extends Controller
         $output  = '';
         $id      = $request->id;
         $truyens = Truyen::where('id', '<', $id)->orderBy('id', 'DESC')->limit(2)->get();
-        $lastData = Truyen::where('id', '<', $id)->orderBy('id', 'desc')->first();
         if (!$truyens->isEmpty()) {
             $output = view("home.ajax_paging_home", compact('truyens'))->render();
-            $output .= '<div class="col-lg-8 col-md-12 offset-5" id="remove-row">
-                            <button class="load-more-btn btn btn-info" id="btn-more" href="#" data-id="'.$lastData->id.'">LOAD MORE</button>
-                        </div>';
             echo $output;
         }
     }
