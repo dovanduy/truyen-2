@@ -56,7 +56,7 @@
                                 <tbody>
                                 @foreach($truyens as $item)
                                     <tr>
-                                       <td><img src="{{URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar)}}" width="150px" height="100px"></td>
+                                       <td><img src="{{URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar)}}" width="100" height="100"></td>
                                        <td>{{$item->title}}</td>
                                        <td>
                                            <?php

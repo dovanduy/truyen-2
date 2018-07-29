@@ -99,7 +99,7 @@ class TruyenController extends Controller
         $result    = [];
         foreach ($html->find($divParent) as $div) {
             foreach ($div->find('img') as $element) {
-                $imgSrc       = $element->src;
+                $imgSrc       = trim($element->src);
                 $url          = $imgSrc;
                 $fileName     = explode('/', $imgSrc);
                 $fileName     = array_reverse($fileName);
@@ -149,7 +149,7 @@ class TruyenController extends Controller
             case 1: //blogtruyen.com
                 foreach ($html->find('#list-chapters') as $div) {
                     foreach ($div->find('a') as $element) {
-                        $title     = $element->plaintext;
+                        $title     = trim($element->plaintext);
                         $title     = explode(' ', $title);
                         $title     = array_reverse($title);
                         $totalChap = ltrim($title[0], '0');
