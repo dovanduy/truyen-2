@@ -675,3 +675,5 @@ Route::get('client/delete-truyen/{id}', 'TruyenController@deleteTruyen');
 //=========================FrontEnd=============================================
 Route::get('/', 'HomeController@index');
 Route::get('pagingHome', 'HomeController@pagingHome');
+Route::get('detail/{id}/{title}', 'HomeController@detail');
+Route::get('view/{slug}/chap-{chapNumber}', 'HomeController@view');

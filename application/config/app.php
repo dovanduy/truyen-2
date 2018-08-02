@@ -189,6 +189,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -248,6 +249,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Twilio' => Aloha\Twilio\Support\Laravel\Facade::class,
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

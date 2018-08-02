@@ -13,7 +13,7 @@
 									<div class="blog-image"><img src="{{URL::asset('files/'.$itemt->folder_name.'/avatar/'.$itemt->img_avatar)}}" alt="Blog Image"></div>
 									<div class="blog-info">
 
-										<h4 class="title"><a href="#"><b>{{$itemt->title}}</b></a></h4>
+										<h4 class="title"><a href="{{url('detail/'.$itemt->id.'/'.vn_to_str($itemt->title))}}"><b>{{$itemt->title}}</b></a></h4>
 										<div class="row" style="">
                                         <div class="col-xs-6" style="margin-right: 20px;margin-left: 20px">
                                           <div class="hotup-list">
