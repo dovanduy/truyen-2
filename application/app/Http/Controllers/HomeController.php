@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Truyen;
 use App\Models\TruyenChap;
 use App\Models\TruyenChapImg;
+use App\Models\Cate;
 use Illuminate\Http\Request;
 use DB;
 class HomeController extends Controller
@@ -54,5 +55,13 @@ class HomeController extends Controller
             And t.slug='".$slug."'";
         $listImg = DB::select($sql);
        return view('home.view',compact('truyen','truyenChaps','listImg','chapNumber'));
+    }
+
+    public function cate(Request $request)
+    {
+        $cateId = $request->id;
+        $cate=Cate::find($cateId);
+        $truyens      = Truyen::where('cate_id',$cateId)->orderBy('id', 'desc')->take(2)->get();
+        return view('home.cate', compact('cate','truyens'));
     }
 }

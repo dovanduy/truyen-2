@@ -23,7 +23,7 @@
                             <ul class="col-sm-2 list-unstyled">
                             <?php }?>
                                 <li class="">
-                                    <a href="#" title="">
+                                    <a href="{{url('cate/'.$item->id.'/'.vn_to_str($item->name))}}" title="">
                                        {{$item->name}}
                                     </a>
                                 </li>
