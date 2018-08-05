@@ -14,7 +14,7 @@
 									$count=Truyen::where('cate_id',$item->id)->count();
 								?>
 								<div class="col-6">
-		                        <a href="#">{{$item->name}} <span> ({{$count}})</span></a>
+		                        <a href="{{url('cate/'.$item->id.'/'.vn_to_str($item->name))}}">{{$item->name}} <span> ({{$count}})</span></a>
 		                   		 </div>
 		                   		@endforeach
 

@@ -9,6 +9,8 @@ use App\Console\Commands\VerifyProductStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\CrawFirst;
+use App\Console\Commands\CrawNewChap;
+include base_path() . '/vendor/simplehtmldom/simple_html_dom.php';
 class Kernel extends ConsoleKernel
 {
     /**
@@ -22,6 +24,7 @@ class Kernel extends ConsoleKernel
         //VerifyProductStatus::class,
         // BulkSMSFile::class,
         CrawFirst::class,
+        CrawNewChap::class
     ];
 
     /**

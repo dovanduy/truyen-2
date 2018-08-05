@@ -126,7 +126,7 @@ select.soflow{
 						</div><!-- post-top-area -->
 						<div class="each-page">
 								@foreach($listImg as $item)
-									<img src="{{URL::asset('files/'.$truyen->folder_name.'/'.$item->title.'/'.$item->chap_img)}}" ><br/>
+									<img src="{{URL::asset('files/'.$truyen->folder_name.'/'.$item->folder_name.'/'.$item->chap_img)}}" ><br/>
 								@endforeach
 
 						</div>

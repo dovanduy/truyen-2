@@ -19,7 +19,7 @@ class TruyenController extends Controller
 
     public function listTruyen()
     {
-        $truyens = Truyen::where('is_delete', 0)->get();
+        $truyens = Truyen::where('is_delete', 0)->orderBy('id', 'desc')->get();
         return view('truyen.list_truyen', compact('truyens'));
     }
 
@@ -58,14 +58,18 @@ class TruyenController extends Controller
         $truyen               = new Truyen();
         $truyen->title        = trim($request->title);
         $truyen->folder_name  = vn_to_str(trim($request->title));
+        $truyen->slug         = vn_to_str(trim($request->title));
         $truyen->url          = trim($request->url);
-        $truyen->cate_id          =$request->cate_id;
+        $truyen->cate_id      = $request->cate_id;
         $truyen->img_avatar   = $request->linkFile;
         $truyen->website_id   = $request->website_id;
         $truyen->summary      = trim($request->summary);
         $truyen->total_chap   = $request->total_chap;
         $truyen->user_id      = Auth::guard('client')->user()->id;
         $truyen->created_date = date('Y-m-d');
+        if ($request->has('is_slideshow')) {
+            $truyen->is_slideshow = 1;
+        }
         $truyen->save();
         return redirect('client/danh-sach-truyen')->with([
             'message' => 'Thêm truyện mới thành công',
@@ -147,27 +151,19 @@ class TruyenController extends Controller
         $totalChap = 0;
         switch ($websiteId) {
             case 1: //blogtruyen.com
-                foreach ($html->find('#list-chapters') as $div) {
-                    foreach ($div->find('a') as $element) {
-                        $title     = trim($element->plaintext);
-                        $title     = explode(' ', $title);
-                        $title     = array_reverse($title);
-                        $totalChap = ltrim($title[0], '0');
-                        break;
-                    }
-                }
+                $ret        = $html->find('#list-chapters a', 0);
+                $lastNumber = trim($ret->plaintext);
+                $lastNumber = explode(' ', $lastNumber);
+                $lastNumber = array_reverse($lastNumber);
+                $totalChap  = ltrim($lastNumber[0], '0');
                 break;
             case 2: //truyentranh.net
-                foreach ($html->find('.chapter-list') as $div) {
-                    foreach ($div->find('a') as $element) {
-                        $element->find('.date-release', 0)->outertext = '';
-                        $title                                        = trim($element->innertext);
-                        $title                                        = explode(' ', $title);
-                        $title                                        = array_reverse($title);
-                        $totalChap                                    = ltrim($title[0], '0');
-                        break;
-                    }
-                }
+                $ret                                      = $html->find('#examples a', -1);
+                $ret->find('.date-release', 0)->outertext = '';
+                $lastNumber                               = trim($ret->plaintext);
+                $lastNumber                               = explode(' ', $lastNumber);
+                $lastNumber                               = array_reverse($lastNumber);
+                $totalChap                                = $lastNumber[1];
                 break;
         }
         $response = array('info' => 'success', 'statusCode' => 0, 'totalChap' => $totalChap);
@@ -180,8 +176,8 @@ class TruyenController extends Controller
         $id       = $request->id;
         $websites = Website::all();
         $truyen   = Truyen::find($id);
-        $cates=Cate::all();
-        return view('truyen.edit_truyen', compact('truyen', 'websites','cates'));
+        $cates    = Cate::all();
+        return view('truyen.edit_truyen', compact('truyen', 'websites', 'cates'));
 
     }
 
@@ -219,16 +215,22 @@ class TruyenController extends Controller
 
         $truyen->title       = trim($request->title);
         $truyen->folder_name = vn_to_str(trim($request->title));
+        $truyen->slug        = vn_to_str(trim($request->title));
         $truyen->url         = trim($request->url);
         if ($request->has('linkFile')) {
             $truyen->img_avatar = $request->linkFile;
         }
-        $truyen->cate_id   = $request->cate_id;
+        $truyen->cate_id      = $request->cate_id;
         $truyen->website_id   = $request->website_id;
         $truyen->summary      = trim($request->summary);
         $truyen->total_chap   = $request->total_chap;
         $truyen->user_id      = Auth::guard('client')->user()->id;
         $truyen->created_date = date('Y-m-d');
+        $is_slideshow         = 0;
+        if ($request->has('is_slideshow')) {
+            $is_slideshow = 1;
+        }
+        $truyen->is_slideshow = $is_slideshow;
         $truyen->save();
         return redirect('client/danh-sach-truyen')->with([
             'message' => 'Sửa truyện thành công',
@@ -245,4 +247,5 @@ class TruyenController extends Controller
             'message' => 'Xóa truyện thành công',
         ]);
     }
+
 }

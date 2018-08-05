@@ -678,3 +678,4 @@ Route::get('pagingHome', 'HomeController@pagingHome');
 Route::get('detail/{id}/{title}', 'HomeController@detail');
 Route::get('view/{slug}/chap-{chapNumber}', 'HomeController@view');
 Route::get('cate/{id}/{title}', 'HomeController@cate');
+Route::get('findTitle', 'HomeController@findTitle');

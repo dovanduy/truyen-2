@@ -44,7 +44,28 @@
 .mgBottom {
     margin-bottom: 30px;
 }
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 </style>
+<style type="text/css">
+        .twitter-typeahead { width: 80%; } 
+        
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+    color: #fff;
+    background-color: #0097cf;
+
+}
+    </style>
 </head>
 <body >
 @include('sub.top_menu')
@@ -74,11 +95,11 @@
             <div class="col-md-3" style="margin-bottom: 10px">
                 <div class="card">
                     <div class="card-img-top card-img-top-250">
-                        <img src="{{URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar)}}" alt="Carousel 1">
+                        <a href="{{url('detail/'.$item->id.'/'.$item->slug)}}" target="_blank"><img src="{{URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar)}}" /></a>
                     </div>
                     <div class="card-block p-t-2">
-                        <div class="card-header"><h3>{{$item->title}}</h3></div>
-                        <div class="card-text">{{$item->title}} Chap {{$item->total_chap}}</div>
+                        <div class="card-header"><h3 class="ellipsis"><a href="{{url('detail/'.$item->id.'/'.$item->slug)}}" target="_blank">{{$item->title}}</a></h3></div>
+                        <div class="card-text"><a href="{{url('view/'.$item->slug.'/chap-'.$item->total_chap)}}" target="_blank">{{$item->title}} Chap {{$item->total_chap}}</a></div>
                     </div>
                 </div>
             </div>
@@ -108,16 +129,23 @@
                         ?>
                         @foreach($truyens as $itemt)
                         <?php
-                            $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('chap_number','desc')->take(8)->get();
+                            if($itemt->website_id==1){//blogtruyen
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','asc')->take(8)->get();
+                            }else {//truyentranh
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','desc')->take(8)->get();
+                            }
+                            
                         ?>
 						<div class="col-md-6 col-sm-12 mgBottom">
 							<div class="card h-100">
 								<div class="single-post post-style-1">
 
-									<div class="blog-image"><img src="{{URL::asset('files/'.$itemt->folder_name.'/avatar/'.$itemt->img_avatar)}}" alt="Blog Image"></div>
+									<div class="blog-image"><a href="{{url('detail/'.$itemt->id.'/'.$itemt->slug)}}" target="_blank"><img src="{{URL::asset('files/'.$itemt->folder_name.'/avatar/'.$itemt->img_avatar)}}" alt="Blog Image">
+                  </a>
+                  </div>
 									<div class="blog-info">
 
-										<h4 class="title"><a href="{{url('detail/'.$itemt->id.'/'.vn_to_str($itemt->title))}}"><b>{{$itemt->title}}</b></a></h4>
+										<h4 class="title ellipsis"><a href="{{url('detail/'.$itemt->id.'/'.$itemt->slug)}}" target="_blank"><b>{{$itemt->title}}</b></a></h4>
 										<div class="row" style="">
                                         <div class="col-xs-6" style="margin-right: 20px;margin-left: 20px">
                                           <div class="hotup-list">
@@ -126,7 +154,7 @@
                                             ?>
                                             @foreach($truyenChap as $item)
                                             @if($chapNumber<=3)
-                                              <a class="latest-chap" href="#" target="_blank">Chap {{$item->chap_number}}</a>
+                                              <a class="latest-chap" href="{{url('view/'.$itemt->slug.'/chap-'.$item->chap_number)}}" target="_blank">Chap {{$item->chap_number}}</a>
                                               <br/>
                                             @endif
                                             <?php
@@ -142,7 +170,7 @@
                                           <div class="hotup-list">
                                             @foreach($truyenChap as $item)
                                             @if($chapNumber<=7 && $chapNumber>3)
-                                              <a class="latest-chap" href="#" target="_blank">Chap {{$item->chap_number}}</a>
+                                              <a class="latest-chap" href="{{url('view/'.$itemt->slug.'/chap-'.$item->chap_number)}}" target="_blank">Chap {{$item->chap_number}}</a>
                                               <br/>
                                             @endif
                                             <?php
@@ -154,9 +182,9 @@
 
                                       </div>
 										<ul class="post-footer">
-											<li><a href="#"><i class="ion-heart"></i>57</a></li>
-											<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-											<li><a href="#"><i class="ion-eye"></i>138</a></li>
+											<!-- <li><a href="#"><i class="ion-heart"></i>57</a></li>
+											<li><a href="#"><i class="ion-chatbubble"></i>6</a></li> -->
+											<li><a href="#"><i class="ion-eye"></i>{{$itemt->total_view}}</a></li>
 										</ul>
 
 									</div><!-- blog-info -->
@@ -164,9 +192,11 @@
 							</div><!-- card -->
 						</div><!-- col-md-6 col-sm-12 -->
                         @endforeach
+                        @if($totalTruyen>8)
                         <div class="col-lg-8 col-md-12 offset-5" id="remove-row">
                             <button class="load-more-btn btn btn-info" id="btn-more" href="#" data-id="{{$itemt->id}}">LOAD MORE</button>
                         </div>
+                        @endif
 					</div><!-- row -->
                     
 				</div><!-- col-lg-8 col-md-12 -->
@@ -180,15 +210,25 @@
 
 
 	@include('sub.footer')
-
+<input type="hidden" id="_url" value="{{url('/')}}">
 	<!-- SCIPTS -->
     {!! Html::script("assets/home/common-js/jquery-3.1.1.min.js") !!}
 
 	<!-- <script src="common-js/tether.min.js"></script> -->
+  <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('input[name="_token"]').val()
+        }
+    });
 
+    var _url=$('#_url').val();
+
+</script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 	<!-- <script src="common-js/scripts.js"></script> -->
+  {!! Html::script("assets/js/truyen.js") !!}
 	<script>
    (function($){
 	   "use strict";
@@ -223,5 +263,8 @@ $(document).ready(function(){
    });  
 }); 
 </script>
+<script>
+            
+        </script>
 </body>
 </html>

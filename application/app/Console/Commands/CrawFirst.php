@@ -8,7 +8,6 @@ use App\Models\TruyenChapImg;
 use App\Models\Website;
 use Illuminate\Console\Command;
 
-include base_path() . '/vendor/simplehtmldom/simple_html_dom.php';
 class CrawFirst extends Command
 {
     /**
@@ -61,15 +60,20 @@ class CrawFirst extends Command
                 case 'blogtruyen.com':
                     foreach ($html->find('#list-chapters') as $div) {
                         foreach ($div->find('a') as $row1) {
-                            $title      = vn_to_str(trim($row1->plaintext));
+                            $title      = trim($row1->plaintext);
                             $chapNumber = trim($row1->plaintext);
                             $chapNumber = explode(' ', $chapNumber);
                             $chapNumber = array_reverse($chapNumber);
-                            $chapNumber = ltrim($chapNumber[0], '0');
+                            //$chapNumber = ltrim($chapNumber[0], '0');
+                            $chapNumber = $chapNumber[0];
+                            $folderName = str_replace("–", "", $title);
+                            $folderName = str_replace("-", "", $folderName);
+                            $folderName = vn_to_str($folderName);
                             //insert truyen_chap
                             $truyenChap               = new TruyenChap();
                             $truyenChap->truyen_id    = $truyenId;
                             $truyenChap->title        = $title;
+                            $truyenChap->folder_name  = $folderName;
                             $truyenChap->chap_number  = $chapNumber;
                             $truyenChap->user_id      = 0;
                             $truyenChap->created_date = date('Y-m-d');
@@ -85,7 +89,7 @@ class CrawFirst extends Command
                                     $srcImage = trim($rowChild->src);
                                     $href     = $srcImage;
                                     $linkImg  = $href;
-                                    if (preg_match('/\.(jpeg|jpg|png|gif)$/i', $linkImg)) {
+                                    if (preg_match('/\.(jpeg|jpg|png|gif)/i', $linkImg)) {
                                         $titleFile = explode('?', basename($href));
                                         $titleFile = $titleFile[0];
                                         $fileName  = vn_to_str($titleFile);
@@ -100,7 +104,7 @@ class CrawFirst extends Command
                                         $data  = curl_exec($ch);
                                         $error = curl_error($ch);
                                         curl_close($ch);
-                                        $subFolder = $rootPath . '/files/' . $nameManga . '/' . $title;
+                                        $subFolder = $rootPath . '/files/' . $nameManga . '/' . $folderName;
                                         if (!file_exists($subFolder)) {
                                             mkdir($subFolder, 0755, true);
                                         }
@@ -127,15 +131,20 @@ class CrawFirst extends Command
                     foreach ($html->find('#examples') as $div) {
                         foreach ($div->find('a') as $row1) {
                             $row1->find('.date-release', 0)->outertext = '';
-                            $title                                     = vn_to_str(trim($row1->innertext));
+                            $title                                     = trim($row1->innertext);
                             $chapNumber                                = trim($row1->innertext);
                             $chapNumber                                = explode(' ', $chapNumber);
                             $chapNumber                                = array_reverse($chapNumber);
-                            $chapNumber                                = ltrim($chapNumber[0], '0');
+                            //$chapNumber                                = ltrim($chapNumber[0], '0');
+                            $chapNumber = $chapNumber[0];
+                            $folderName = str_replace("–", "", $title);
+                            $folderName = str_replace("-", "", $folderName);
+                            $folderName = vn_to_str($folderName);
                             //insert truyen_chap
                             $truyenChap               = new TruyenChap();
                             $truyenChap->truyen_id    = $truyenId;
                             $truyenChap->title        = $title;
+                            $truyenChap->folder_name  = $folderName;
                             $truyenChap->chap_number  = $chapNumber;
                             $truyenChap->user_id      = 0;
                             $truyenChap->created_date = date('Y-m-d');
@@ -166,7 +175,9 @@ class CrawFirst extends Command
                                         $data  = curl_exec($ch);
                                         $error = curl_error($ch);
                                         curl_close($ch);
-                                        $subFolder = $rootPath . '/files/' . $nameManga . '/' . $title;
+                                        $title     = str_replace("–", "", $title);
+                                        $title     = str_replace("-", "", $title);
+                                        $subFolder = $rootPath . '/files/' . $nameManga . '/' . $folderName;
                                         if (!file_exists($subFolder)) {
                                             mkdir($subFolder, 0755, true);
                                         }

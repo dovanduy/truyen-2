@@ -172,7 +172,11 @@ footer {
                         
                         @foreach($truyens as $itemt)
                         <?php
-                            $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('chap_number','desc')->take(8)->get();
+                            if($itemt->website_id==1){//blogtruyen
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','asc')->take(8)->get();
+                            }else {//truyentranh
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','desc')->take(8)->get();
+                            }
                         ?>
 						<div class="col-lg-4 col-md-6 mgBottom">
 							<div class="card h-100">

@@ -44,6 +44,11 @@
 .mgBottom {
     margin-bottom: 30px;
 }
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 </style>
 </head>
 <body >
@@ -60,7 +65,11 @@
                         ?>
                         @foreach($truyens as $itemt)
                         <?php
-                            $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('chap_number','desc')->take(8)->get();
+                            if($itemt->website_id==1){//blogtruyen
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','asc')->take(8)->get();
+                            }else {//truyentranh
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','desc')->take(8)->get();
+                            }
                         ?>
 						<div class="col-md-6 col-sm-12 mgBottom">
 							<div class="card h-100">
@@ -69,7 +78,7 @@
 									<div class="blog-image"><img src="{{URL::asset('files/'.$itemt->folder_name.'/avatar/'.$itemt->img_avatar)}}" alt="Blog Image"></div>
 									<div class="blog-info">
 
-										<h4 class="title"><a href="{{url('detail/'.$itemt->id.'/'.vn_to_str($itemt->title))}}"><b>{{$itemt->title}}</b></a></h4>
+										<h4 class="title ellipsis"><a href="{{url('detail/'.$itemt->id.'/'.vn_to_str($itemt->title))}}"><b>{{$itemt->title}}</b></a></h4>
 										<div class="row" style="">
                                         <div class="col-xs-6" style="margin-right: 20px;margin-left: 20px">
                                           <div class="hotup-list">
@@ -106,9 +115,9 @@
 
                                       </div>
 										<ul class="post-footer">
-											<li><a href="#"><i class="ion-heart"></i>57</a></li>
-											<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-											<li><a href="#"><i class="ion-eye"></i>138</a></li>
+											<!-- <li><a href="#"><i class="ion-heart"></i>57</a></li>
+											<li><a href="#"><i class="ion-chatbubble"></i>6</a></li> -->
+											<li><a href="#"><i class="ion-eye"></i>{{$itemt->total_view}}</a></li>
 										</ul>
 
 									</div><!-- blog-info -->
@@ -116,9 +125,11 @@
 							</div><!-- card -->
 						</div><!-- col-md-6 col-sm-12 -->
                         @endforeach
+                        @if($totalTruyen>8)
                         <div class="col-lg-8 col-md-12 offset-5" id="remove-row">
                             <button class="load-more-btn btn btn-info" id="btn-more" href="#" data-id="{{$itemt->id}}">LOAD MORE</button>
                         </div>
+                        @endif
 					</div><!-- row -->
                     
 				</div><!-- col-lg-8 col-md-12 -->

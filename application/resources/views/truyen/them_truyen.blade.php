@@ -78,6 +78,14 @@
                               </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-sm-2">Slideshow:</label>
+                                <div class="col-sm-10">
+                                  <div class="checkbox">
+                                    <label><input type="checkbox" name="is_slideshow" value="1"></label>
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Mô tả</label>
                                 <div class="col-sm-10">
                                   <textarea class="form-control" name="summary" rows="10" id="summary">{{old("summary")}}</textarea>
