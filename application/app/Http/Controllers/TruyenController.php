@@ -88,6 +88,12 @@ class TruyenController extends Controller
             case 2: //truyentranh.net
                 $divParent = '.cover-detail';
                 break;
+            case 3: //mangak.info
+                $divParent = '.truyen_info_left';
+                break;
+            case 4: //nettruyen.com
+                $divParent = '.col-image';
+                break;
         }
         $website = Website::where('id', $websiteId)->first();
         $pos     = strpos($url, $website->name);
@@ -105,11 +111,16 @@ class TruyenController extends Controller
             foreach ($div->find('img') as $element) {
                 $imgSrc       = trim($element->src);
                 $url          = $imgSrc;
-                $fileName     = explode('/', $imgSrc);
-                $fileName     = array_reverse($fileName);
-                $typeFileName = explode('.', $fileName[0]);
-                $typeFileName = $typeFileName[1];
-                $fileName     = $nameManga . '.' . $typeFileName;
+                
+                if($websiteId==4){
+                    $fileName     = $nameManga . '.jpg';
+                }else {
+                    $fileName     = explode('/', $imgSrc);
+                    $fileName     = array_reverse($fileName);
+                    $typeFileName = explode('.', $fileName[0]);
+                    $typeFileName = $typeFileName[1];
+                    $fileName     = $nameManga . '.' . $typeFileName;
+                }
                 $ch           = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -155,7 +166,7 @@ class TruyenController extends Controller
                 $lastNumber = trim($ret->plaintext);
                 $lastNumber = explode(' ', $lastNumber);
                 $lastNumber = array_reverse($lastNumber);
-                $totalChap  = ltrim($lastNumber[0], '0');
+                $totalChap  = $lastNumber[0];
                 break;
             case 2: //truyentranh.net
                 $ret                                      = $html->find('#examples a', -1);
@@ -164,6 +175,25 @@ class TruyenController extends Controller
                 $lastNumber                               = explode(' ', $lastNumber);
                 $lastNumber                               = array_reverse($lastNumber);
                 $totalChap                                = $lastNumber[1];
+                break;
+            case 3: //mangak.info
+                $ret        = $html->find('.chapter-list a', 0);
+                $lastNumber = trim($ret->plaintext);
+                $lastNumber = explode(' ', $lastNumber);
+                $lastNumber = array_reverse($lastNumber);
+                $totalChap  = $lastNumber[0];
+                break;
+            case 4: //nettruyen.com
+                $ret                                      = $html->find('#nt_listchapter a',0);
+                $lastNumber                               = trim($ret->plaintext);
+                $pos = strpos($lastNumber,':');
+                if ($pos !== false) {
+                    $lastNumber                               = explode(':', $lastNumber);
+                    $lastNumber                               = $lastNumber[0];
+                }
+                $lastNumber                               = explode(' ', $lastNumber);
+                $lastNumber                               = array_reverse($lastNumber);
+                $totalChap                                = $lastNumber[0];
                 break;
         }
         $response = array('info' => 'success', 'statusCode' => 0, 'totalChap' => $totalChap);

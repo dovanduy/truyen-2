@@ -9,7 +9,7 @@
 						<p class="copyright">chomtruyen @ {{date('Y')}}. All rights reserved.</p>
 						<p class="copyright">Designed by <a href="#" target="_blank">haideptrai</a></p>
 						<ul class="icons">
-							<li><a href="#"><i class="ion-social-facebook-outline"></i></a></li>
+							<li><a href="https://www.facebook.com/profile.php?id=100013117532713"><i class="ion-social-facebook-outline"></i></a></li>
 							<li><a href="#"><i class="ion-social-twitter-outline"></i></a></li>
 							<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
 							<li><a href="#"><i class="ion-social-vimeo-outline"></i></a></li>

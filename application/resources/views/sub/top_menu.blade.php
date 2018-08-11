@@ -1,5 +1,5 @@
 <nav id="topNav" class="navbar navbar-expand-md navbar-light bg-faded" style="background: #fff;">
-    <a class="navbar-brand" href="#first"><img src="{{URL::asset('assets/img/home.png')}}" alt="Logo Image"></a>
+    <a class="navbar-brand" href="{{url('/')}}"><img src="{{URL::asset('assets/img/home.png')}}" alt="Logo Image"></a>
     <button class="navbar-toggler hidden-md-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         ☰
     </button>
@@ -8,9 +8,9 @@
         	<li class="nav-item active">
 	        	<a class="nav-link" href="{{url('/')}}">Trang chủ <span class="sr-only">(current)</span></a>
 	      	</li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="{{url('gioi-thieu')}}">Giới thiệu<span class="sr-only">(current)</span></a>
-            </li>
+            </li> -->
             <li class="nav-item dropdown megamenu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Thể loại<span class="caret"></span></a>
                 <div class="dropdown-menu p-3">

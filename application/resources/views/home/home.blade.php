@@ -65,6 +65,9 @@
     background-color: #0097cf;
 
 }
+.card-text{
+  height: 66px;
+}
     </style>
 </head>
 <body >
@@ -129,12 +132,12 @@
                         ?>
                         @foreach($truyens as $itemt)
                         <?php
-                            if($itemt->website_id==1){//blogtruyen
-                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','asc')->take(8)->get();
+                            /*if($itemt->website_id==1 || $itemt->website_id==3){//blogtruyen
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('title','desc')->take(8)->get();
                             }else {//truyentranh
-                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','desc')->take(8)->get();
-                            }
-                            
+                              $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('title','desc')->take(8)->get();
+                            }*/
+                            $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('title','desc')->take(8)->get();
                         ?>
 						<div class="col-md-6 col-sm-12 mgBottom">
 							<div class="card h-100">
@@ -225,6 +228,7 @@
     var _url=$('#_url').val();
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 	<!-- <script src="common-js/scripts.js"></script> -->

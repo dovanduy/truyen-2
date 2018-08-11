@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<title>TITLE</title>
+	<title>{{$truyen->title}}</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
@@ -97,8 +97,29 @@
 .mgBottom {
     margin-bottom: 30px;
 }
-footer {
-	    margin-top: 0px;
+
+/* ---------------------------------
+8. FOOTER
+--------------------------------- */
+
+footer{ padding: 70px 0 30px; text-align: center; background: #fff; }
+
+footer .footer-section{ margin-bottom: 40px; }
+
+footer .footer-section .title{ margin-bottom: 20px; }
+
+footer .footer-section ul > li{ margin: 0 5px; }
+
+footer .copyright{ margin: 10px 0 20px; }
+
+footer .icons > li > a{ height: 40px; width: 40px; border-radius: 40px; line-height: 40px; text-align: center; 
+	transition: all .3s; box-shadow: 0px 0px 2px rgba(0,0,0,1); background: #498BF9; color: #fff; }
+
+footer .icons > li > a:hover{ transform: translateY(-2px); box-shadow: 5px 10px 20px rgba(0,0,0,.3); }
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 </style>
 </head>
@@ -118,26 +139,26 @@ footer {
 							<div class="post-image-img"><img class="imgResize" src="{{URL::asset('files/'.$truyen->folder_name.'/avatar/'.$truyen->img_avatar)}}" alt="Blog Image"></div>
 							<p class="para">{!! $truyen->summary !!}
 							</p>
-							<ul class="tags">
+							<!-- <ul class="tags">
 								<li><a href="#">Mnual</a></li>
 								<li><a href="#">Liberty</a></li>
 								<li><a href="#">Recommendation</a></li>
 								<li><a href="#">Inspiration</a></li>
-							</ul>
+							</ul> -->
 						</div><!-- blog-post-inner -->
 
 						<div class="post-icons-area">
 							<ul class="post-icons">
-								<li><a href="#"><i class="ion-heart"></i>57</a></li>
-								<li><a href="#"><i class="ion-chatbubble"></i>6</a></li>
-								<li><a href="#"><i class="ion-eye"></i>138</a></li>
+								<!-- <li><a href="#"><i class="ion-heart"></i>57</a></li>
+								<li><a href="#"><i class="ion-chatbubble"></i>6</a></li> -->
+								<li><a href="#"><i class="ion-eye"></i>{{$truyen->total_view}}</a></li>
 							</ul>
 
 							<ul class="icons">
 								<li>SHARE : </li>
 								<li><a href="#"><i class="ion-social-facebook"></i></a></li>
-								<li><a href="#"><i class="ion-social-twitter"></i></a></li>
-								<li><a href="#"><i class="ion-social-pinterest"></i></a></li>
+								<!-- <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+								<li><a href="#"><i class="ion-social-pinterest"></i></a></li> -->
 							</ul>
 						</div>
 						<div class="total-chapter">
@@ -172,11 +193,12 @@ footer {
                         
                         @foreach($truyens as $itemt)
                         <?php
-                            if($itemt->website_id==1){//blogtruyen
+                            /*if($itemt->website_id==1){//blogtruyen
                               $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','asc')->take(8)->get();
                             }else {//truyentranh
                               $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('id','desc')->take(8)->get();
-                            }
+                            }*/
+                            $truyenChap = TruyenChap::where('truyen_id',$itemt->id)->orderBy('title','desc')->take(8)->get();
                         ?>
 						<div class="col-lg-4 col-md-6 mgBottom">
 							<div class="card h-100">
@@ -185,7 +207,7 @@ footer {
 									<div class="blog-image"><img src="{{URL::asset('files/'.$itemt->folder_name.'/avatar/'.$itemt->img_avatar)}}" alt="Blog Image"></div>
 									<div class="blog-info">
 
-										<h4 class="title"><a href="#"><b>{{$itemt->title}}</b></a></h4>
+										<h4 class="title ellipsis"><a href="#"><b>{{$itemt->title}}</b></a></h4>
 										<div class="row" style="">
                                         <div class="col-xs-6" style="margin-right: 20px;margin-left: 20px">
                                           <div class="hotup-list">
@@ -238,68 +260,32 @@ footer {
 	</section>
 	@endif
 
-	<footer>
+	@include('sub.footer')
+	<input type="hidden" id="_url" value="{{url('/')}}">
+  <!-- SCIPTS -->
 
-		<div class="container">
-			<div class="row">
-
-				<div class="col-lg-4 col-md-6">
-					<div class="footer-section">
-
-						<a class="logo" href="#"><img src="images/logo.png" alt="Logo Image"></a>
-						<p class="copyright">Bona @ 2017. All rights reserved.</p>
-						<p class="copyright">Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-						<ul class="icons">
-							<li><a href="#"><i class="ion-social-facebook-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-twitter-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-vimeo-outline"></i></a></li>
-							<li><a href="#"><i class="ion-social-pinterest-outline"></i></a></li>
-						</ul>
-
-					</div><!-- footer-section -->
-				</div><!-- col-lg-4 col-md-6 -->
-
-				<div class="col-lg-4 col-md-6">
-						<div class="footer-section">
-						<h4 class="title"><b>CATAGORIES</b></h4>
-						<ul>
-							<li><a href="#">BEAUTY</a></li>
-							<li><a href="#">HEALTH</a></li>
-							<li><a href="#">MUSIC</a></li>
-						</ul>
-						<ul>
-							<li><a href="#">SPORT</a></li>
-							<li><a href="#">DESIGN</a></li>
-							<li><a href="#">TRAVEL</a></li>
-						</ul>
-					</div><!-- footer-section -->
-				</div><!-- col-lg-4 col-md-6 -->
-
-				<div class="col-lg-4 col-md-6">
-					<div class="footer-section">
-
-						<h4 class="title"><b>SUBSCRIBE</b></h4>
-						<div class="input-area">
-							<form>
-								<input class="email-input" type="text" placeholder="Enter your email">
-								<button class="submit-btn" type="submit"><i class="icon ion-ios-email-outline"></i></button>
-							</form>
-						</div>
-
-					</div><!-- footer-section -->
-				</div><!-- col-lg-4 col-md-6 -->
-
-			</div><!-- row -->
-		</div><!-- container -->
-	</footer>
-
+  <!-- <script src="common-js/tether.min.js"></script> -->
+  
 
 	<!-- SCIPTS -->
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+	<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('input[name="_token"]').val()
+        }
+    });
+
+    var _url=$('#_url').val();
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="http://cdn.truyentranh.net/frontend/js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+	<!-- <script src="common-js/scripts.js"></script> -->
+  {!! Html::script("assets/js/truyen.js") !!}
 	<script type="text/javascript">
 		(function ($) {
     $(window).load(function () {
@@ -309,6 +295,31 @@ footer {
     });
 })(jQuery);
 	</script>
-
+<script>
+$(document).ready(function(){
+   $(document).on('click','#btn-more',function(){
+       var id = $(this).data('id');
+       $("#btn-more").html("Loading....");
+       $.ajax({
+           url : '{{ url("pagingHome") }}',
+           method : "GET",
+           data : {id:id, _token:"{{csrf_token()}}"},
+           dataType : "text",
+           success : function (data)
+           {
+              if(data != '') 
+              {
+                  $('#remove-row').remove();
+                  $('#load-data').append(data);
+              }
+              else
+              {
+                  $('#btn-more').html("No Data");
+              }
+           }
+       });
+   });  
+}); 
+</script>
 </body>
 </html>

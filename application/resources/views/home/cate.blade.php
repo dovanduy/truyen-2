@@ -87,7 +87,7 @@
                                             ?>
                                             @foreach($truyenChap as $item)
                                             @if($chapNumber<=3)
-                                              <a class="latest-chap" href="#" target="_blank">Chap {{$item->chap_number}}</a>
+                                              <a class="latest-chap" href="{{url('view/'.$itemt->slug.'/chap-'.$item->chap_number)}}" target="_blank">Chap {{$item->chap_number}}</a>
                                               <br/>
                                             @endif
                                             <?php
@@ -103,7 +103,7 @@
                                           <div class="hotup-list">
                                             @foreach($truyenChap as $item)
                                             @if($chapNumber<=7 && $chapNumber>3)
-                                              <a class="latest-chap" href="#" target="_blank">Chap {{$item->chap_number}}</a>
+                                              <a class="latest-chap" href="{{url('view/'.$itemt->slug.'/chap-'.$item->chap_number)}}" target="_blank">Chap {{$item->chap_number}}</a>
                                               <br/>
                                             @endif
                                             <?php
@@ -143,30 +143,36 @@
 
 
 	@include('sub.footer')
-
-	<!-- SCIPTS -->
+<input type="hidden" id="_url" value="{{url('/')}}">
+  <!-- SCIPTS -->
     {!! Html::script("assets/home/common-js/jquery-3.1.1.min.js") !!}
 
-	<!-- <script src="common-js/tether.min.js"></script> -->
+  <!-- <script src="common-js/tether.min.js"></script> -->
+  <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('input[name="_token"]').val()
+        }
+    });
 
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    var _url=$('#_url').val();
 
-	<!-- <script src="common-js/scripts.js"></script> -->
-	<script>
-   (function($){
-	   "use strict";
-	   $('.next').click(function(){ $('.carousel').carousel('next');return false; });
-	   $('.prev').click(function(){ $('.carousel').carousel('prev');return false; });
-   })	
-   (jQuery);
 </script>
+	<!-- SCIPTS -->
+
+	<!-- <script src="common-js/tether.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <!-- <script src="common-js/scripts.js"></script> -->
+  {!! Html::script("assets/js/truyen.js") !!}
 <script>
 $(document).ready(function(){
    $(document).on('click','#btn-more',function(){
        var id = $(this).data('id');
        $("#btn-more").html("Loading....");
        $.ajax({
-           url : '{{ url("pagingHome") }}',
+           url : '{{ url("pagingHome/".$cate->id) }}',
            method : "GET",
            data : {id:id, _token:"{{csrf_token()}}"},
            dataType : "text",

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	<title>TITLE</title>
+	<title>{{$truyen->title}}</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
@@ -77,6 +77,28 @@ select.soflow{
     bottom: 20px;
     right: 20px;
     display:none;
+}
+/* ---------------------------------
+8. FOOTER
+--------------------------------- */
+
+footer{ padding: 70px 0 30px; text-align: center; background: #fff; }
+
+footer .footer-section{ margin-bottom: 40px; }
+
+footer .footer-section .title{ margin-bottom: 20px; }
+
+footer .footer-section ul > li{ margin: 0 5px; }
+
+footer .copyright{ margin: 10px 0 20px; }
+
+footer .icons > li > a{ height: 40px; width: 40px; border-radius: 40px; line-height: 40px; text-align: center; 
+  transition: all .3s; box-shadow: 0px 0px 2px rgba(0,0,0,1); background: #498BF9; color: #fff; }
+
+footer .icons > li > a:hover{ transform: translateY(-2px); box-shadow: 5px 10px 20px rgba(0,0,0,.3); }
+.each-page {
+    width: 80%;
+    margin: 0 auto;
 }
 	</style>
 
@@ -160,69 +182,31 @@ select.soflow{
                 <div style="clear:both;"></div>
 		</div><!-- container -->
 	</section><!-- post-area -->
+ <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+	@include('sub.footer')
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+<input type="hidden" id="_url" value="{{url('/')}}">
+  <!-- SCIPTS -->
 
-	<footer>
+  <!-- <script src="common-js/tether.min.js"></script> -->
+  <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-Token': $('input[name="_token"]').val()
+        }
+    });
 
-    <div class="container">
-      <div class="row">
+    var _url=$('#_url').val();
 
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-section">
-
-            <a class="logo" href="#"><img src="images/logo.png" alt="Logo Image"></a>
-            <p class="copyright">Bona @ 2017. All rights reserved.</p>
-            <p class="copyright">Designed by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-            <ul class="icons">
-              <li><a href="#"><i class="ion-social-facebook-outline"></i></a></li>
-              <li><a href="#"><i class="ion-social-twitter-outline"></i></a></li>
-              <li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
-              <li><a href="#"><i class="ion-social-vimeo-outline"></i></a></li>
-              <li><a href="#"><i class="ion-social-pinterest-outline"></i></a></li>
-            </ul>
-
-          </div><!-- footer-section -->
-        </div><!-- col-lg-4 col-md-6 -->
-
-        <div class="col-lg-4 col-md-6">
-            <div class="footer-section">
-            <h4 class="title"><b>CATAGORIES</b></h4>
-            <ul>
-              <li><a href="#">BEAUTY</a></li>
-              <li><a href="#">HEALTH</a></li>
-              <li><a href="#">MUSIC</a></li>
-            </ul>
-            <ul>
-              <li><a href="#">SPORT</a></li>
-              <li><a href="#">DESIGN</a></li>
-              <li><a href="#">TRAVEL</a></li>
-            </ul>
-          </div><!-- footer-section -->
-        </div><!-- col-lg-4 col-md-6 -->
-
-        <div class="col-lg-4 col-md-6">
-          <div class="footer-section">
-
-            <h4 class="title"><b>SUBSCRIBE</b></h4>
-            <div class="input-area">
-              <form>
-                <input class="email-input" type="text" placeholder="Enter your email">
-                <button class="submit-btn" type="submit"><i class="icon ion-ios-email-outline"></i></button>
-              </form>
-            </div>
-
-          </div><!-- footer-section -->
-        </div><!-- col-lg-4 col-md-6 -->
-
-      </div><!-- row -->
-    </div><!-- container -->
-  </footer>
-
-
+</script>
 
 	<!-- SCIPTS -->
 
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <!-- <script src="common-js/scripts.js"></script> -->
+  {!! Html::script("assets/js/truyen.js") !!}
 	<script type="text/javascript">
 		$(document).ready(function(){
      $(window).scroll(function () {
@@ -241,7 +225,7 @@ select.soflow{
             return false;
         });
         
-        $('#back-to-top').tooltip('show');
+        //$('#back-to-top').tooltip('show');
 
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cate;
 use App\Models\Truyen;
 use App\Models\TruyenChap;
+use App\Models\Website;
 use DB;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,12 @@ class HomeController extends Controller
     {
         $output  = '';
         $id      = $request->id;
-        $truyens = Truyen::where('id', '<', $id)->orderBy('id', 'DESC')->take(8)->get();
+        if($request->has('cateId')){
+            $truyens = Truyen::where('id', '<', $id)->where('cate_id',$request->cateId)->orderBy('id', 'DESC')->take(8)->get();
+        }else {
+            $truyens = Truyen::where('id', '<', $id)->orderBy('id', 'DESC')->take(8)->get();
+        }
+        
         if (!$truyens->isEmpty()) {
             $output = view("home.ajax_paging_home", compact('truyens'))->render();
             echo $output;
@@ -41,12 +47,12 @@ class HomeController extends Controller
         $id      = $request->id;
         $truyen  = Truyen::find($id);
         $truyens = Truyen::where('cate_id', $truyen->cate_id)->where('id', '!=', $truyen->id)->orderBy('id', 'desc')->take(3)->get();
-        if ($truyen->cate_id == 1) {
-//blogtruyen
-            $truyenChaps = TruyenChap::where('truyen_id', $id)->orderBy('id', 'asc')->get();
+        $website     = Website::find($truyen->website_id);
+        $websiteName = $website->name;
+        if ($websiteName == 'blogtruyen.com' || $websiteName == 'mangak.info') {
+            $truyenChaps = TruyenChap::where('truyen_id', $id)->orderBy('title', 'desc')->get();
         } else {
-//2 truyentranh
-            $truyenChaps = TruyenChap::where('truyen_id', $id)->orderBy('id', 'desc')->get();
+            $truyenChaps = TruyenChap::where('truyen_id', $id)->orderBy('title', 'desc')->get();
         }
 
         return view('home.detail', compact('truyen', 'truyens', 'truyenChaps'));
@@ -57,7 +63,10 @@ class HomeController extends Controller
         $chapNumber  = $request->chapNumber;
         $slug        = $request->slug;
         $truyen      = Truyen::where('slug', $slug)->first();
-        $truyenChaps = TruyenChap::where('truyen_id', $truyen->id)->orderBy('chap_number', 'desc')->get();
+        //update view
+        $truyen->total_view=$truyen->total_view+1;
+        $truyen->save();
+        $truyenChaps = TruyenChap::where('truyen_id', $truyen->id)->orderBy('title', 'desc')->get();
         $sql         = "SELECT c.title,i.chap_img,c.folder_name
             FROM truyen t ,truyen_chap c,truyen_chap_img i
             WHERE
@@ -66,6 +75,7 @@ class HomeController extends Controller
             AND c.chap_number='" . $chapNumber . "'
             And t.slug='" . $slug . "'";
         $listImg = DB::select($sql);
+
         return view('home.view', compact('truyen', 'truyenChaps', 'listImg', 'chapNumber'));
     }
 
