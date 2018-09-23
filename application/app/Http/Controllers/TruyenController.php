@@ -56,8 +56,8 @@ class TruyenController extends Controller
             return redirect('client/them-truyen')->withErrors($v->errors())->withInput();
         }
         $truyen               = new Truyen();
-        $truyen->title        = trim($request->title);
-        $truyen->folder_name  = vn_to_str(trim($request->title));
+        $truyen->title        = strtolower(trim($request->title));
+        $truyen->folder_name  = vn_to_str(strtolower(trim($request->title)));
         $truyen->slug         = vn_to_str(trim($request->title));
         $truyen->url          = trim($request->url);
         $truyen->cate_id      = $request->cate_id;
@@ -78,8 +78,8 @@ class TruyenController extends Controller
 
     public function getImgAvatar(Request $request)
     {
-        $title     = vn_to_str($request->title);
-        $url       = $request->url;
+        $title     = vn_to_str(trim($request->title));
+        $url       = trim($request->url);
         $websiteId = $request->websiteId;
         switch ($websiteId) {
             case 1: //blogtruyen.com
@@ -91,9 +91,7 @@ class TruyenController extends Controller
             case 3: //mangak.info
                 $divParent = '.truyen_info_left';
                 break;
-            case 4: //nettruyen.com
-                $divParent = '.col-image';
-                break;
+
         }
         $website = Website::where('id', $websiteId)->first();
         $pos     = strpos($url, $website->name);
@@ -111,16 +109,11 @@ class TruyenController extends Controller
             foreach ($div->find('img') as $element) {
                 $imgSrc       = trim($element->src);
                 $url          = $imgSrc;
-                
-                if($websiteId==4){
-                    $fileName     = $nameManga . '.jpg';
-                }else {
-                    $fileName     = explode('/', $imgSrc);
-                    $fileName     = array_reverse($fileName);
-                    $typeFileName = explode('.', $fileName[0]);
-                    $typeFileName = $typeFileName[1];
-                    $fileName     = $nameManga . '.' . $typeFileName;
-                }
+                $fileName     = explode('/', $imgSrc);
+                $fileName     = array_reverse($fileName);
+                $typeFileName = explode('.', $fileName[0]);
+                $typeFileName = $typeFileName[1];
+                $fileName     = $nameManga . '.' . $typeFileName;
                 $ch           = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -149,7 +142,7 @@ class TruyenController extends Controller
 
     public function getTotalChap(Request $request)
     {
-        $url       = $request->url;
+        $url       = trim($request->url);
         $websiteId = $request->websiteId;
         $website   = Website::where('id', $websiteId)->first();
         $pos       = strpos($url, $website->name);
@@ -182,18 +175,6 @@ class TruyenController extends Controller
                 $lastNumber = explode(' ', $lastNumber);
                 $lastNumber = array_reverse($lastNumber);
                 $totalChap  = $lastNumber[0];
-                break;
-            case 4: //nettruyen.com
-                $ret                                      = $html->find('#nt_listchapter a',0);
-                $lastNumber                               = trim($ret->plaintext);
-                $pos = strpos($lastNumber,':');
-                if ($pos !== false) {
-                    $lastNumber                               = explode(':', $lastNumber);
-                    $lastNumber                               = $lastNumber[0];
-                }
-                $lastNumber                               = explode(' ', $lastNumber);
-                $lastNumber                               = array_reverse($lastNumber);
-                $totalChap                                = $lastNumber[0];
                 break;
         }
         $response = array('info' => 'success', 'statusCode' => 0, 'totalChap' => $totalChap);
@@ -233,19 +214,18 @@ class TruyenController extends Controller
         if ($v->fails()) {
             return redirect('client/sua-truyen/' . $id)->withErrors($v->errors())->withInput();
         }
-
         $truyen = Truyen::find($id);
         //rename folder truyen
-        $titleNew      = $request->title;
-        $titleOld      = $truyen->title;
+        $titleNew      = strtolower(trim($request->title));
+        $titleOld      = strtolower(trim($truyen->title));
         $rootPath      = dirname(base_path());
         $oldFolderName = $rootPath . '/files/' . vn_to_str($titleOld);
         $newFolderName = $rootPath . '/files/' . vn_to_str($titleNew);
         rename($oldFolderName, $newFolderName);
 
-        $truyen->title       = trim($request->title);
-        $truyen->folder_name = vn_to_str(trim($request->title));
-        $truyen->slug        = vn_to_str(trim($request->title));
+        $truyen->title       = strtolower(trim($request->title));
+        $truyen->folder_name = vn_to_str(strtolower(trim($request->title)));
+        $truyen->slug        = vn_to_str(strtolower(trim($request->title)));
         $truyen->url         = trim($request->url);
         if ($request->has('linkFile')) {
             $truyen->img_avatar = $request->linkFile;
@@ -276,6 +256,79 @@ class TruyenController extends Controller
         return redirect('client/danh-sach-truyen')->with([
             'message' => 'Xóa truyện thành công',
         ]);
+    }
+
+    public function pagingTruyen(Request $request)
+    {
+        $columns = array(
+            0 => 'id',
+            1 => 'title',
+            2 => 'website_id',
+            3 => 'cate_id',
+            4 => 'total_chap',
+            5 => 'created_date',
+            6 => 'action'
+        );
+
+        $totalData = Truyen::count();
+
+        $totalFiltered = $totalData;
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir   = $request->input('order.0.dir');
+
+        if (empty($request->input('search.value'))) {
+            $posts = Truyen::offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
+        } else {
+            $search = $request->input('search.value');
+
+            $posts = Truyen::where('id', 'LIKE', "%{$search}%")
+                ->orWhere('title', 'LIKE', "%{$search}%")
+                ->offset($start)
+                ->limit($limit)
+                ->orderBy($order, $dir)
+                ->get();
+
+            $totalFiltered = Truyen::where('id', 'LIKE', "%{$search}%")
+                ->orWhere('title', 'LIKE', "%{$search}%")
+                ->count();
+        }
+
+        $data = array();
+        if (!empty($posts)) {
+            foreach ($posts as $item) {
+                $website = Website::where('id',$item->website_id)->first();
+                $websiteName=$website->name;
+                $cate = Cate::where('id',$item->cate_id)->first();
+                $cateName=$cate->name;
+                $action='<a class="btn btn-success btn-xs" href="'.url('client/sua-truyen/'.$item->id).'"><i class="fa fa-edit"></i>Sửa</a>
+                <a href="#" class="btn btn-danger btn-xs cdelete" id="'.$item->id.'"><i class="fa fa-trash"></i> Xoá</a>';
+                $data[] = array(
+                    'img'=>'<img width="100" height="100" src="'.URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar).'"/>',
+                    'title'=>$item->title,
+                    'website_id'=>$websiteName,
+                    'cate_id'=>$cateName,
+                    'total_chap'=>$item->total_chap,
+                    'created_date'=>date('d-m-Y',strtotime($item->created_date)),
+                    'action'=>$action
+                );
+
+            }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data,
+        );
+
+        echo json_encode($json_data);
     }
 
 }

@@ -54,7 +54,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($truyens as $item)
+                                <!-- @foreach($truyens as $item)
                                     <tr>
                                        <td><img src="{{URL::asset('files/'.$item->folder_name.'/avatar/'.$item->img_avatar)}}" width="100" height="100"></td>
                                        <td>{{$item->title}}</td>
@@ -77,7 +77,7 @@
                                             <a href="#" class="btn btn-danger btn-xs cdelete" id="{{$item->id}}"><i class="fa fa-trash"></i> Xoá</a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach -->
                                 </tbody>
                             </table>
                         </div>
@@ -103,13 +103,20 @@
   var table = $('.data-table').DataTable( {
                                         rowId: '',
                                         "bDestroy": true,
-                                        ordering: false,
+                                        ordering: true,
                                         "searching": true,
                                         //"bAutoWidth": false,
                                         //"autoWidth": true,
                                         //"scrollX": true,
                                         "scrollX": false,
                                         "bAutoWidth": false,
+                                        "processing": true,
+                                        "serverSide": true,
+                                        "ajax":{
+                                         "url": "{{ url('client/pagingTruyen') }}",
+                                         "dataType": "json",
+                                         "type": "GET"
+                                       },
                                         "oLanguage": {
                                             "sLengthMenu": "Hiện _MENU_ Dòng",
                                             "sSearch": "",
@@ -121,7 +128,16 @@
                                             "sInfoFiltered": "(được lọc từ _MAX_ mục)",
                                             "sInfoPostFix": "",
                                             "sUrl": ""
-                                        }
+                                        },
+                                        "columns": [
+                                            { "data": "img","bSortable": false },
+                                            { "data": "title"},
+                                            { "data": "website_id" },
+                                            { "data": "cate_id" },
+                                            { "data": "total_chap" },
+                                            { "data": "created_date" },
+                                            { "data": "action","bSortable": false },
+                                        ]  
                                       });
 
 </script>

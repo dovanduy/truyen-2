@@ -669,7 +669,7 @@ Route::get('client/get-total-chap', 'TruyenController@getTotalChap');
 Route::get('client/sua-truyen/{id}', 'TruyenController@editTruyen');
 Route::post('client/post-sua-truyen', 'TruyenController@postSuaTruyen');
 Route::get('client/delete-truyen/{id}', 'TruyenController@deleteTruyen');
-
+Route::get('client/pagingTruyen', 'TruyenController@pagingTruyen');
 //======================================================================
 // Front end
 //=========================FrontEnd=============================================

@@ -8,7 +8,7 @@ use App\Models\TruyenChap;
 use App\Models\Website;
 use DB;
 use Illuminate\Http\Request;
-
+use App\Jobs\TestJob;
 include base_path() . '/vendor/simplehtmldom/simple_html_dom.php';
 class HomeController extends Controller
 {
@@ -19,7 +19,7 @@ class HomeController extends Controller
 
     public function index()
     {
-
+        dispatch(new TestJob());
         $newSlideShow = Truyen::where('is_slideshow', 1)->where('is_delete', 0)->orderBy('created_date', 'desc')->take(8)->get();
         $truyens      = Truyen::orderBy('id', 'desc')->take(8)->get();
         $totalTruyen  = count($truyens);
